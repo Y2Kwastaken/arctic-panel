@@ -1,0 +1,4 @@
+/servers
+/cache
+**/__pycache__
+**/localplugins

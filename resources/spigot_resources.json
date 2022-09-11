@@ -1,0 +1,8 @@
+{
+    "spigot-resources": {
+        "Vault": 34315,
+        "craft-koth": "local:/home/miles/Documents/PythonProjects/minecraft-panel/resources/localplugins/craft-koth.jar"
+    },
+    "bungee-resources": {
+    }
+}
