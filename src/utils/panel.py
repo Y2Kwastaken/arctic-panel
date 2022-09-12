@@ -28,7 +28,7 @@ class Panel:
 
             self.panel_layout()
 
-            uinput, possible_option = self.panel_input("CP")
+            uinput, possible_option = self.panel_input(self.get_tag())
 
             if possible_option:
                 self.options[uinput][1]()
@@ -78,6 +78,9 @@ class Panel:
         raise NotImplementedError()
 
     def display_description(self):
+        raise NotImplementedError()
+
+    def get_tag(self) -> str:
         raise NotImplementedError()
 
     def clear(self):

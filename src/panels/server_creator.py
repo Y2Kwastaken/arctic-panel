@@ -30,6 +30,9 @@ class ServerCreator(Panel):
     def display_description(self):
         print("")
 
+    def get_tag(self):
+        return "SC"
+
     def paper(self):
         PaperServerCreator(self.shelper)
 
