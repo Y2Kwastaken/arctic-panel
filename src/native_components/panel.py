@@ -32,6 +32,7 @@ class Panel:
 
             if possible_option:
                 self.options[uinput][1]()
+                self.clear()
 
     def panel_layout(self) -> None:
         if self.layout is not None:

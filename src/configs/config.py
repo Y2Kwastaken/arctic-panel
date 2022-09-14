@@ -10,6 +10,7 @@ class ConfigData:
     config: any  # I wish I knew waht type this was
     server_directory: str
     cache_directory: str
+    blacklisted_commands: list[str]
 
     def __init__(self) -> None:
         self.config = load_config(
@@ -17,6 +18,7 @@ class ConfigData:
 
         self.server_directory = self.config["server-directory"]
         self.cache_directory = self.config["download-cache"]
+        self.blacklisted_commands = self.config["blacklisted-commands"]
 
     def write(self, key: any, value: any):
         self.config[key] = value

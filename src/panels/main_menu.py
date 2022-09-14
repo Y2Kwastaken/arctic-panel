@@ -1,7 +1,8 @@
 from panels.server_creator import ServerCreator
 from panels.server_manager import ServerManager
+from panels.screen_manager import ScreenManager
 from utils.cosmetics import cfiglet, cprint
-from utils.panel import Panel
+from native_components.panel import Panel
 
 
 class MainMenu(Panel):
@@ -10,6 +11,7 @@ class MainMenu(Panel):
         options = {
             "1": ("Server Manager", self.server_manager),
             "2": ("Server Creator", self.server_creator),
+            "3": ("Screen Manager", self.screen_manager),
         }
         super().__init__(options=options, autoclear=autoclear)
         super().start()
@@ -29,3 +31,6 @@ class MainMenu(Panel):
     
     def server_manager(self):
         ServerManager(parent_panel=self)
+        
+    def screen_manager(self):
+        ScreenManager(parent_panel=self)

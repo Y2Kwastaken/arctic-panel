@@ -2,11 +2,11 @@ from os import mkdir, system
 from os.path import isdir
 from configs.config_manager import CONFIG
 from random import randint
-from utils.panel import Panel
+from native_components.panel import Panel
 from utils.file import install_resource
 from utils.cosmetics import cfiglet, cinput, cprint
 from utils.server_install import install_paper, install_waterfall
-from utils.servers_helper import ServersHelper, ServersHelper
+from native_components.servers_helper import ServersHelper, ServersHelper
 from pick import pick
 import shutil
 

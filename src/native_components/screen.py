@@ -2,6 +2,8 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from enum import Enum
+import time
+from threading import Thread
 import subprocess
 import os
 
@@ -46,7 +48,7 @@ def parse_screen_list() -> list[ScreenInfo]:
     # This occurs under the event where there are no screens
     if "No Sockets found" in screen_info:
         return []
-    
+
     # This occurs under the event where there is screens running
     screens_text = screen_info.split("\r\n")[1:-1][0]
 
@@ -84,6 +86,7 @@ ACTIVE_SCREENS: list[ScreenInfo] = parse_screen_list()
 
 def update_active_screens():
     global ACTIVE_SCREENS
+    ACTIVE_SCREENS = []
     ACTIVE_SCREENS = parse_screen_list()
 
 
@@ -99,6 +102,10 @@ def get_parsed_screen_by_pid(pid: int) -> ScreenInfo:
             return screen
 
 
+def get_all_screen_names() -> list[str]:
+    return [screen.name for screen in ACTIVE_SCREENS]
+
+
 class Screen:
 
     screen_info: ScreenInfo
@@ -109,19 +116,20 @@ class Screen:
             self.screen_info = get_parsed_screen_by_pid(pid)
         elif name is not None:
             self.screen_info = get_parsed_screen(name)
-            
+
             if self.screen_info is None:
-                self.screen_info = ScreenInfo(name, -1, "", "", ScreenState.DEAD)
+                self.screen_info = ScreenInfo(
+                    name, -1, "", "", ScreenState.DEAD)
         else:
             raise Exception("No screen info provided")
 
         if self.screen_info is None:
             raise ScreenDoesNotExistException("Screen not found")
-        
+
         if self.screen_info.state is not None:
             self.running = self.screen_info.state != ScreenState.DEAD
             return
-        
+
         self.running = False
 
     def start(self) -> None:
@@ -140,6 +148,7 @@ class Screen:
             return
         self.running = False
         subprocess.Popen(["screen", "-X", "-S", self.screen_info.name, "quit"])
+        time.sleep(0.01)
         update_active_screens()
 
     def attach(self) -> None:
@@ -147,6 +156,12 @@ class Screen:
             print("Screen is not running")
             return
         os.system(f"screen -r {self.screen_info.name}")
+
+    def send_command(self, command: str) -> None:
+        if self.screen_info.name is None:
+            return
+        subprocess.call(
+            ["screen", "-S", f"{self.screen_info.name}", "-X", "stuff", f"{command}\015"])
 
 
 class ScreenDoesNotExistException(Exception):
